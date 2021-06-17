@@ -1,3 +1,10 @@
+'''
+Approach: To maximize the fee and limit the weight to 4000000, I have first sorted the
+         input list in descending order of the fee/weight ratio. This approach is similar to the one 
+         in the fractional Knapsack algorithm that helps to maximize the profit.
+
+'''
+
 
 ## A class for setting the data of each transaction.
 ## All the parameters that are required for determining
@@ -12,23 +19,27 @@ class MemPoolTransaction():
         self.txid = txid
         self.fee = int(fee)
         self.weight = int(weight)
-        self.ratio = round((float(fee)/float(weight)),6)
+        self.ratio = round((float(fee)/float(weight)),6)   ## fee/weight ratio
         self.parents = parent_list
-        self.transactions.append(txid)
+        self.transactions.append(txid)   ## Keeping a track of all transactions done so far.
         self.isvalid = False
 
+        ## If no parent exists then the transaction can be made.
         if self.parents == "":
             self.isvalid = True
         else:
             self.current_parents = self.parents.split(";")
         
             for parent in self.current_parents:
+                ## If all the parents have already been included then the current transaction is possible.
                 if parent in self.transactions:
-                    self.isvalid = True
+                    self.isvalid = True        
                 else:
-                    self.isvalid = False
+                    ## If one of the parent isn't included yet, then transaction is invalid
+                    self.isvalid = False    
                     break
 
+    ## Returning values of various attributes of this class using methods.
     def get_txid(self):
         return self.txid
 
@@ -43,9 +54,6 @@ class MemPoolTransaction():
 
     def parent_is_valid(self):
         return self.isvalid
-    
-    def get_parents(self):
-        return self.parents
 
 ## All the operations that are performed for determining the optimal solutions 
 ## will be done by this class.
