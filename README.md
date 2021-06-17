@@ -15,7 +15,7 @@ TO DO:
 2. We need to output a block of transaction ids which accumulate to a total weight of less 4000000
 
 3. Condition for the block: Transactions with parent transcations can be included 
-only if it\'s parent transactions have been included before
+only if it's parent transactions have been included before
 
 ```
 
