@@ -57,7 +57,7 @@ class MemPoolTransaction():
 
 ## All the operations that are performed for determining the optimal solutions 
 ## will be done by this class.
-class block_operations():
+class BlockOperations():
 
     ## initliazing variables. 
     total_fees = 0
@@ -73,12 +73,12 @@ class block_operations():
         with open(file_name) as f:
             self.inputBlock = [MemPoolTransaction(*line.strip().split(',')) for line in f.readlines()[1:]]
 
-        block_operations().sort_descending(self.inputBlock)
+        BlockOperations().sort_descending(self.inputBlock)
 
     ## Sorting the list according to the fee/weight ratio for maximum profit.
     def sort_descending(self, transactions):
         sorted_list = sorted(transactions,key= lambda e: e.get_ratio(),reverse=True)
-        block_operations().check_transactions(sorted_list)
+        BlockOperations().check_transactions(sorted_list)
         
     ## Writing the transaction Ids to the output file.
     def write_to_file(self):
@@ -105,12 +105,12 @@ class block_operations():
 
         for i in all_inputs:
 
-            if(block_operations().check_condition(i, self.total_weight)):
+            if(BlockOperations().check_condition(i, self.total_weight)):
                 self.total_fees += i.get_fee()
                 self.total_weight += i.get_weight()
                 self.final_transactions.append(i)
         
-        block_operations().end_transaction(self.total_fees, self.total_weight, len(self.final_transactions))
+        BlockOperations().end_transaction(self.total_fees, self.total_weight, len(self.final_transactions))
     
     ## Output the values 
     def end_transaction(self, tot_fee, tot_weight, tot_transactions):
@@ -119,7 +119,7 @@ class block_operations():
         print("Total Weight:", tot_weight)
         print("Total transactions:", tot_transactions)
     
-        block_operations().write_to_file()
+        BlockOperations().write_to_file()
 
 
 ## The entire program is handled with the help of 2 classes.
@@ -127,5 +127,5 @@ class block_operations():
 ## an output file with the optimal transactions will be generated.
 if __name__ == '__main__':
     
-    transactions = block_operations()
+    transactions = BlockOperations()
     transactions.read_file('mempool.csv')  ## Pass the file name
